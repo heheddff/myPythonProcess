@@ -1,0 +1,8 @@
+CREATE TABLE money(
+  userid int(11) DEFAULT NULL,
+  money int(11) DEFAULT NULL
+
+  )ENGINE=INNODB DEFAULT charset=utf8;
+
+INSERT INTO money VALUES(11,110);
+INSERT INTO money VALUES(12,10);
