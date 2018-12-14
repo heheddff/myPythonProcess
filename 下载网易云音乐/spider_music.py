@@ -5,6 +5,7 @@ from html_parser import Html_Parser
 from save import Save
 from set_text_color import Set_Color
 
+
 class Spider_Music():
 	
 	def __init__(self):
@@ -25,7 +26,12 @@ class Spider_Music():
 				continue
 			
 			print("¿ªÊ¼ÏÂÔØ {} {}".format(newurl['name'],newurl['url']))
-			htmlcontent = self.download.download(newurl['url'])			
+			htmlcontent = self.download.download(newurl['url'])
+			
+			if htmlcontent['htmlcontents'] == None:
+				self.url_manager.delUrl(newurl)
+				self.url_manager.addurl(newurl)			
+				
 			newurls,result = self.html_parser.parser(htmlcontent)
 			
 			self.url_manager.addurls(newurls)			

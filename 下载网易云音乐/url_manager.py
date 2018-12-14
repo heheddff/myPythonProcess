@@ -22,6 +22,11 @@ class Url_Manager():
 		self.__oldurl.append(newurl)
 		return newurl
 	
+	def delUrl(self,url):
+		if url in self.__oldurl:
+			self.__oldurl.remove(url)
+		
+		
 	@property	
 	def checknewurllength(self):
 		return len(self.__newurl)
