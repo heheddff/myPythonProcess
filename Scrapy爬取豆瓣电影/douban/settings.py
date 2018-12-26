@@ -66,7 +66,10 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    #豆瓣电影
     'douban.pipelines.DoubanPipeline': 300,
+    #双色球
+    #'douban.pipelines.BwlcPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

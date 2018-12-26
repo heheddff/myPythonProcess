@@ -28,5 +28,15 @@ class DoubanSpiderSpider(scrapy.Spider):
         #print(next_link)
         #pass
         if next_link:
-            next_link = next_link[0]
-            yield scrapy.Request("https://movie.douban.com/top250"+next_link,callback=self.parse)
+            next_url = next_link[0]
+            #使用urljoin构建绝对路径
+            #next_url = response.urljoin(next_url)
+            # yield scrapy.Request(next_link, callback=self.parse)
+            #收到构建绝对路径
+            #yield scrapy.Request("https://movie.douban.com/top250"+next_link,callback=self.parse)
+            #response.follow方法使用相对路径
+            #yield response.follow(next_url, callback=self.parse)
+            #使用follow自动处理链接
+            for href in next_link:
+                print(href)
+                yield response.follow(href,callback=self.parse)
