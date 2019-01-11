@@ -1,4 +1,4 @@
-Version(pip):
+Version(pip):<br>
 celery        3.1.26.post2
 Django        2.1.5       
 django-celery 3.2.2       
