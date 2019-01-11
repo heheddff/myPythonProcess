@@ -14,6 +14,7 @@ Example:
 vote--模拟Django教程中的投票程序
 myblog--模拟blog程序
 celeryLearn--模拟Django+django-celery+Flower异步处理
+myplatform--使用django-celery-results替换django-celery,使用新版本celery
 
 Command
 celery worker -A demo -l INFO --启动worker
@@ -22,3 +23,4 @@ python3 manage.py runserver 192.168.1.204:7000 --启动Django并指定访问IP�
 python3 manage.py celery beat -l INFO --启动定时任务(配合Django配置)
 python3 manage.py celery worker -l INFO --启动worker（配合Django配置）
 python3 manage.py celery flower --basic_auth=admin:607921 --启动flower监控并指定登陆用户名和密码
+celery -A myplatform worker -l INFO --配合myplatform使用
