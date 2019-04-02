@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+    {% block content %}
+    {{ data.age }}
+    {% if data.age < 18 %}
+        {{ data.name }}
+    {% elif data.age == 18 %}
+        {{ data.school | default('unkown') | default('xxx')}}
+    {% else %}
+        {{ data.age }}
+    {% endif %}
+        {% set mes =  get_flashed_messages() %}
+        {{ mes }}
+{% endblock %}
