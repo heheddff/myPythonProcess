@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 product = "test"  # 项目名称
 user = 'test'  # 用户目录
 configs = {
@@ -7,4 +10,15 @@ configs = {
     'logs_path': "forumdata/logs/{0}/{1}.log",
     'ip_deny_file': '/usr/local/nginx/conf/Configs/deny-ip-bbs.conf',  # 需要在对应网站的配置文件include导入此文件
     'web_server': "service nginxd restart",
+    'per': 5,
+    'mail': {
+        'host': 'localhost',
+        'port': 25,
+        'user': 'user',
+        'pass': 'password',
+        'sender': 'user@exampel.com',
+        'receivers': ['receiver@exampel.com'],
+        'product': product,
+    }
 }
+
