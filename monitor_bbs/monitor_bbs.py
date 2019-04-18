@@ -8,6 +8,7 @@ import re
 from config import configs
 from sockets import Sockets
 from sendmail import Mail
+from weixin import WeiXin
 
 
 class MonitorBBS(object):
@@ -38,6 +39,13 @@ class MonitorBBS(object):
             configs['mail']['receivers'],
             configs['mail']['product'],
         )
+        self.weixin = WeiXin(
+            corpid=configs['weixin']['corpid'],
+            secrect=configs['weixin']['secrect'],
+            agentid=configs['weixin']['agentid'],
+            touser=configs['weixin']['touser'],
+            product=configs['product']
+        )
         # 输出基础配置
         print(self.base_file)
         print(self.bbs_logs)
@@ -60,20 +68,23 @@ class MonitorBBS(object):
     @staticmethod
     def lists(path=None):
         lists = set()
-        if path is None:
-            return lists
+        try:
+            if path is None:
+                return lists
 
-        if os.path.isfile(path):
-            with open(path) as f:
-                for line in f:
-                    lists.add(line.strip("\r\n"))
-            return lists
+            if os.path.isfile(path):
+                with open(path) as f:
+                    for line in f:
+                        lists.add(line.strip("\r\n"))
+                return lists
 
-        if os.path.exists(path):
-            dirs = os.listdir(path)
-            for line in dirs:
-                lists.add(line)
-        return lists
+            if os.path.exists(path):
+                dirs = os.listdir(path)
+                for line in dirs:
+                    lists.add(line)
+                return lists
+        except Exception as e:
+            print(e)
 
     # 取差集
     @staticmethod
@@ -103,9 +114,14 @@ class MonitorBBS(object):
         year = time.strftime('%y%m', time.localtime(time.time()))
         login_log = self.bbs_logs.format(year, day)
         if os.path.exists(login_log) is True:
-            with open(login_log) as f:
-                contents = f.read()
-            return contents
+            try:
+                with open(login_log,encoding='utf-8') as f:
+                    contents = f.read()
+            except Exception as e:
+                print(e)
+                return ''
+            else:
+                return contents
         else:
             return False
 
@@ -150,9 +166,10 @@ class MonitorBBS(object):
 
     # 添加ip到黑名单
     def add_block_ip(self, ip_lists=None):
-        if len(ip_lists) == 0:
-            return
         count = 0
+        if len(ip_lists) == 0:
+            return count
+
         template = "deny {0};\n"
         try:
             f = open(self.ip_deny_file, "a+")
@@ -179,15 +196,16 @@ class MonitorBBS(object):
                 print(msg)
         except Exception as e:
             print(e)
-        
 
     def send(self, files=None):
         if len(files) == 0:
             return
         self.mail.send("\r\n".join(files))
+        self.weixin.send("\r\n".join(files))
+        self.sockets.send(",".join(files))
         for filename in files:
             if filename not in self.bases:
-                self.sockets.send(filename)
+
                 self.move_file(filename)
                 ip_lists = self.get_ip_from_log(filename)
                 count = self.add_block_ip(ip_lists)
@@ -201,7 +219,9 @@ class MonitorBBS(object):
         self.send(files)
 
     def main(self):
+
         while True:
+            #self.weixin.send('test')
             self.core()
             time.sleep(self.per)  # 休眠时间,秒
 

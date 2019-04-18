@@ -11,7 +11,7 @@ class Sockets(object):
     def sockets(self, msg):
         client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         client.settimeout(3)
-        client.sendto(msg, self.ip_port)
+        client.sendto(msg.encode('utf-8'), self.ip_port)
         try:
             data, server_addr = client.recvfrom(self.buffer)
         except Exception as e:
