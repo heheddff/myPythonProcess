@@ -1,0 +1,67 @@
+<!doctype html>
+  <head>
+    <title>{% block title %}{% endblock %} - Flaskr</title>
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='./icon/iconfont.css') }}">
+    <script type=text/javascript src="{{  url_for('static', filename='jquery-1.7.1.min.js') }}"></script>
+    <script type=text/javascript src="{{  url_for('static', filename='icon/iconfont.js') }}"></script>
+  <style>
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15em;
+      fill: currentColor;
+      overflow: hidden;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+    .start{
+        color:#006569;
+    }
+    .stop{
+        color:#333333;
+    }
+    .restart{
+        color:#B77674;
+    }
+    .layout{
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.5);
+        z-index:100;
+    }
+    </style>
+  </head>
+
+<body>
+  <div class="container-fluid">
+
+    <!--导航-->
+    <nav>
+      <ul>
+        {% if g.user %}
+          <li><span>{{ g.user['username'] }}</span>
+          <!--<li><a href="{{ url_for('server.index') }}">Server</a>-->
+          <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% else %}
+          <!--<li><a href="{{ url_for('auth.register') }}">Register</a>-->
+          <li><a href="{{ url_for('auth.login') }}">Log In</a>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <section>
+      <header>
+        {% block header %}{% endblock %}
+      </header>
+
+      {% block content %}{% endblock %}
+    </section>
+  </div>
+</body>
+
